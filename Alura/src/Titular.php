@@ -1,34 +1,21 @@
 <?php
-require_once 'C:\xampp\htdocs\Caderno-PHP\Alura\src\Cpf.php';
 
-class Titular
+class Titular extends Pessoa
 {
-    private $cpf;
-    private string $nome;
-
-    public function __construct(Cpf $cpf, string $nome)
+    private Endereco $endereco;
+    
+    public function __construct(Cpf $cpf, string $nome, Endereco $endereco)
     {
-        $this->cpf = $cpf;
         $this->validaNome($nome);
         $this->nome = $nome;
+        $this->cpf = $cpf;
+        $this->endereco = $endereco;
     }
 
-    public function getCpf(): string
+    public function getEndereco(): Endereco
     {
-       return $this->cpf->getCpf();
+        return $this->endereco;
     }
 
-    public function getNome(): string
-    {
-        return $this->nome;
-    }
-
-    private function validaNome(string $nome)
-    {
-        if(strlen($nome) < 5) {
-            echo "Nome precisa ter pelo menos 5 letras";
-            exit();
-        }
-    }
 }
 ?>
