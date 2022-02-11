@@ -1,27 +1,41 @@
 <?php
+namespace Alura\Banco\Modelo\Conta;
 
 class Conta 
 {
     private $titular;
     private float $saldo;
     private static $numeroContas = 0;
-
-    public function __construct(Titular $titular)
+    /** 
+     * $tipo 1 == Conta corrente; 2 == Poupança 
+     */
+    private $tipoConta;
+    
+    
+    public function __construct(Titular $titular, int $tipoConta)
     {
        $this->titular = $titular;
        $this->saldo = 0;
+       $this->tipo = $tipoConta;
 
        self::$numeroContas++;
     }
 
     public function sacar(float $valor)
     {
-        if($valor > $this->saldo) {
+        if ($this->tipoConta === 1) {
+            $tarifaSaque = $valor * 0.05;
+            # code...
+        }else {
+            $tarifaSaque = $valor * 0.03;
+        }
+        
+        $valorSaque = $valor + $tarifaSaque;
+        if($valorSaque > $this->saldo) {
             echo "Saldo indisponível";
             return;
         } 
-
-        $this->saldo -= $valor;
+        $this->saldo -= $valorSaque;
     }
 
     public function depositar(float $valorDeposito): void
@@ -30,7 +44,6 @@ class Conta
             echo "Valor precisa ser positivo";
             return;
         }
-
         $this->saldo += $valorDeposito;
     }
 
@@ -40,7 +53,6 @@ class Conta
             echo "Valor precisa ser positivo <br>";
             return;
         }
-
         $this->sacar($valorTransferir);
         $contaDestino->depositar($valorTransferir);
     }
@@ -60,5 +72,4 @@ class Conta
         return $this->titular->getNome();
     }
 }
-
 ?>
